@@ -12,7 +12,7 @@ from telebot import types
 
 from api import send_request_to_hsc
 
-from db import create_database_table_if_not_exists
+from db import APIsettings, create_database_table_if_not_exists, set_last_settings
 
 
 dates = ['2023-11-11', '2023-11-12', '2023-11-13', '2023-11-14', '2023-11-15', '2023-11-16', '2023-11-17', '2023-11-18']
@@ -73,6 +73,25 @@ def start(update):
 def log(update):
     log_file = open('logging.log', 'rb')
     bot.send_document(update.from_user.id, log_file, reply_markup=buttons)
+
+
+@bot.message_handler(commands=['apisettings'])
+def change_settings(update):
+    
+    def split_value(text: str, spliting_from: str) -> str:
+        return text.split(spliting_from)[1].split(';')[0]
+    
+    text = update.text
+    cookies = text.split('Cookie: ')[1].split(" \\")[0]
+    x_csrf_token = text.split('X-CSRF-Token: ')[1].split("' \\")[0]
+    
+    _gid = split_value(cookies, '_gid=')
+    _gat = split_value(cookies, '_gat=')
+    _ga_3GVV2WPF7F = split_value(cookies, '_ga_3GVV2WPF7F=')
+    WEBCHSID2 = split_value(cookies, 'WEBCHSID2=')
+    _csrf = split_value(cookies, '_csrf=')
+    
+    set_last_settings(APIsettings(_gid, _gat, _ga_3GVV2WPF7F, WEBCHSID2, _csrf, x_csrf_token))
 
 
 def send_request_thread():
