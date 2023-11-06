@@ -1,3 +1,4 @@
+import os
 import random
 import threading
 import time
@@ -10,11 +11,14 @@ import requests
 import telebot
 from telebot import types
 
+from dotenv import load_dotenv
+
 from api import send_request_to_hsc
 
 from db import APIsettings, create_database_table_if_not_exists, set_last_settings
 
 
+load_dotenv()
 dates = ['2023-11-11', '2023-11-12', '2023-11-13', '2023-11-14', '2023-11-15', '2023-11-16', '2023-11-17', '2023-11-18']
 buttons = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 buttons.add(
@@ -60,7 +64,7 @@ def send_message(user_id, message):
     bot.send_message(user_id, message, reply_markup=buttons)
 
 
-bot = telebot.TeleBot('6709872175:AAFTuRbNiHcYvm5cKwBQFy8BkS_awE3pFlM', parse_mode='html')
+bot = telebot.TeleBot(os.getenv('TOKEN'), parse_mode='html')
 
 
 @bot.message_handler(commands=['start'])
