@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 from api import send_request_to_hsc
 
-from db import APIsettings, create_database_table_if_not_exists, set_last_settings
+from db import create_database_table_if_not_exists
 
 
 load_dotenv()
@@ -89,13 +89,10 @@ def change_settings(update):
     cookies = text.split('Cookie: ')[1].split(" \\")[0]
     x_csrf_token = text.split('X-CSRF-Token: ')[1].split("' \\")[0]
     
-    _gid = split_value(cookies, '_gid=')
-    _gat = split_value(cookies, '_gat=')
-    _ga_3GVV2WPF7F = split_value(cookies, '_ga_3GVV2WPF7F=')
     WEBCHSID2 = split_value(cookies, 'WEBCHSID2=')
     _csrf = split_value(cookies, '_csrf=')
     
-    set_last_settings(APIsettings(_gid, _gat, _ga_3GVV2WPF7F, WEBCHSID2, _csrf, x_csrf_token))
+    set_last_settings(APIsettings(WEBCHSID2, _csrf, x_csrf_token))
 
 
 def send_request_thread():
