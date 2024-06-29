@@ -19,7 +19,7 @@ from db import create_database_table_if_not_exists
 
 
 load_dotenv()
-dates = ['2023-11-11', '2023-11-12', '2023-11-13', '2023-11-14', '2023-11-15', '2023-11-16', '2023-11-17', '2023-11-18']
+dates = ['2024-06-30']
 buttons = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 buttons.add(
     types.KeyboardButton(text='/logging'),
